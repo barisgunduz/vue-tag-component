@@ -2,23 +2,20 @@
     <div class="tag-container">
         <Tag
             v-for="(tag, index) in tags"
-            :key="index"
             :tag="tag"
             :index="index"
             :tagColor="color"
             @removeOneTagEvent="removeOneTag($event)"
-        ></Tag>
+            :key="index"
+        />
         <input
             type="text"
             @keydown.enter="addTag"
             @keydown.backspace="removeTag"
         />
-        <div class="error" v-if="error">
-            Bu etiket daha önceden eklenmiştir.
-        </div>
+        <div class="error" v-if="error">Bu etiket daha önceden eklenmiş!!</div>
     </div>
 </template>
-
 <script>
 import Tag from "./Tag";
 export default {
@@ -35,16 +32,15 @@ export default {
         addTag(event) {
             let text = event.target;
             let matchedTag = false;
+
             if (text.value.length > 0) {
                 this.tags.forEach((tag) => {
                     if (tag.toLowerCase() === text.value.toLowerCase()) {
                         matchedTag = true;
                     }
                 });
-
                 if (!matchedTag) {
                     this.tags.push(text.value);
-                    // this.$emit("input", this.tags.join(","));
                     text.value = "";
                 } else {
                     this.error = true;
@@ -55,7 +51,7 @@ export default {
             }
         },
         removeTag(e) {
-            if (e.target.value <= 0) {
+            if (e.target.value.length <= 0) {
                 this.tags.splice(this.tags.length - 1, 1);
             }
         },
@@ -76,6 +72,7 @@ export default {
     created() {
         if (this.value) {
             if (this.value.length > 0) {
+                // deneme,test
                 this.tags = this.value.split(",");
             }
         }
@@ -87,17 +84,18 @@ export default {
     },
 };
 </script>
-
 <style scoped>
 .tag-container {
     border: 1px solid #ccc;
     padding: 20px;
 }
+
 input {
     outline: none;
     height: 30px;
     width: 100px;
 }
+
 .error {
     font-size: 12px;
     color: red;
